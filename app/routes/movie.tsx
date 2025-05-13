@@ -1,7 +1,7 @@
 import { data } from "react-router";
-import { ActorLink } from "../components/actor-link";
-import { load, Movie } from "../db";
 import { Route } from "./+types/movie";
+import { load } from "../db";
+import { ActorLink } from "../components/actor-link";
 import { AddToFavoritesForm } from "../components/add-to-favorites/form";
 
 export async function loader({ params }: Route.LoaderArgs) {

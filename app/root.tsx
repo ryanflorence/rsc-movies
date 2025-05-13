@@ -32,7 +32,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
         <title>RSC Movies</title>
       </head>
-      <body className="font-instrumentSans pb-24">
+      <body className="font-instrumentSans pb-56">
         <GlobalNavigationLoadingBar />
         <Header />
         {children}

@@ -26,14 +26,14 @@ export async function MovieTile({ id }: { id: number }) {
       </h2>
 
       <p className="mb-2">
-        {movie.extract.length > 500
-          ? movie.extract.slice(0, 500) + "..."
+        {movie.extract.length > 350
+          ? movie.extract.slice(0, 350) + "..."
           : movie.extract}
       </p>
 
       <p>
         <b className="font-semibold">Starring</b>:{" "}
-        {movie.cast_ids.map((id, index, arr) => (
+        {movie.cast_ids.slice(0, 10).map((id, index, arr) => (
           <span key={id}>
             <ActorLink id={id} />
             {index < arr.length - 1 && <span className="mx-1">•</span>}
