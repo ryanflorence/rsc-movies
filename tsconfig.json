@@ -1,0 +1,40 @@
+{
+  "include": [
+    "./.react-router/types/**/*",
+    "./.react-router-parcel/types/**/*",
+    "app",
+    "parcel"
+  ],
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "useDefineForClassFields": true,
+    "rootDirs": [".", "./.react-router/types", "./.react-router-parcel/types"],
+    "types": ["node"],
+
+    /* Modules */
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+
+    /* Emit */
+    "noEmit": true,
+
+    /* Interop Constraints */
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Type Checking */
+    "strict": true,
+
+    /* Completeness */
+    "skipLibCheck": true,
+
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  }
+}
