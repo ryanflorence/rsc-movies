@@ -6,10 +6,9 @@ export async function isFavorite(movieId: number) {
 }
 
 export async function addFavorite(movieId: number) {
-  console.log("addFavorite", movieId);
-  // let favorites = session().get("favorites") || [];
-  // favorites.push(movieId);
-  // session().set("favorites", favorites);
+  let favorites = session().get("favorites") || [];
+  favorites.push(movieId);
+  session().set("favorites", favorites);
 }
 
 export async function removeFavorite(movieId: number) {

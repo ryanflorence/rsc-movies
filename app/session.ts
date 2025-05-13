@@ -21,7 +21,6 @@ export let sessionMiddleware: MiddlewareFunction<Response> = async (
   { request },
   next,
 ) => {
-  console.log("sessionMiddleware");
   let cookieHeader = request.headers.get("Cookie");
   let session = await storage.getSession(cookieHeader);
   return new Promise(resolve => {

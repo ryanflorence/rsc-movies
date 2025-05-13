@@ -8,7 +8,6 @@ export const db = new Database(path.join(process.cwd(), "database.sqlite"));
 let context = new AsyncLocalStorage<ReturnType<typeof createLoaders>>();
 
 export const dataMiddleware: MiddlewareFunction<Response> = async (_, next) => {
-  console.log("dataMiddleware");
   let loaders = createLoaders();
   return new Promise(resolve => {
     context.run(loaders, () => {
