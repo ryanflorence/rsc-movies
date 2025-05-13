@@ -1,10 +1,9 @@
+import "./styles.css";
 import {
   Outlet,
   ScrollRestoration,
   type unstable_MiddlewareFunction as MiddlewareFunction,
 } from "react-router";
-import { GlobalNavigationLoadingBar } from "./root.client.tsx";
-import "./styles.css";
 import { Header } from "./components/header.tsx";
 import { Favorites } from "./components/favorites.tsx";
 import { sessionMiddleware } from "./session.ts";
@@ -33,7 +32,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <title>RSC Movies</title>
       </head>
       <body className="font-instrumentSans pb-56">
-        <GlobalNavigationLoadingBar />
         <Header />
         {children}
         <Favorites />

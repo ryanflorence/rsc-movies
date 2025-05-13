@@ -1,6 +1,6 @@
 "use server";
 
-import { addFavorite, removeFavorite } from "../favorites";
+import { addFavorite, removeFavorite } from "../../favorites.ts";
 
 export async function updateFavorite(formData: FormData) {
   let movieId = formData.get("id");

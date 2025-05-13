@@ -1,6 +1,6 @@
-import { updateFavorite } from "../../actions/favorite-movies.ts";
+import { updateFavorite } from "./update-favorite.ts";
 import { isFavorite } from "../../favorites.ts";
-import { AddToFavoritesButton } from "./button";
+import { AddToFavoritesButton } from "./button.tsx";
 
 export async function AddToFavoritesForm({ movieId }: { movieId: number }) {
   let liked = await isFavorite(movieId);
