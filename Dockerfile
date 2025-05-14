@@ -9,6 +9,7 @@ RUN pnpm i --frozen-lockfile
 
 FROM dependencies-env as production-dependencies-env
 COPY ./package.json pnpm-lock.yaml pnpm-workspace.yaml /app/
+COPY ./database.sqlite /app/database.sqlite
 WORKDIR /app
 RUN pnpm i --prod --frozen-lockfile
 
@@ -19,8 +20,9 @@ WORKDIR /app
 RUN pnpm build
 
 FROM dependencies-env
-COPY ./package.json pnpm-lock.yaml pnpm-workspace.yaml database.sqlite /app/
+COPY ./package.json pnpm-lock.yaml pnpm-workspace.yaml /app/
+COPY ./database.sqlite /app/database.sqlite
 COPY --from=production-dependencies-env /app/node_modules /app/node_modules
 COPY --from=build-env /app/dist /app/dist
 WORKDIR /app
-CMD ["pnpm", "start"]
+CMD cp /app/database.sqlite /data/database.sqlite && pnpm start

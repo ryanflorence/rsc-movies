@@ -4,7 +4,11 @@ import path from "node:path";
 import { AsyncLocalStorage } from "node:async_hooks";
 import { type unstable_MiddlewareFunction as MiddlewareFunction } from "react-router";
 
-export const db = new Database(path.join(process.cwd(), "database.sqlite"));
+export const db = new Database(
+  process.env.NODE_ENV === "production"
+    ? "/data/database.sqlite"
+    : path.join(process.cwd(), "database.sqlite"),
+);
 
 db.pragma("journal_mode = WAL");
 db.prepare("DELETE FROM favorites").run();
