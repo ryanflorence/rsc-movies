@@ -7,10 +7,13 @@ export async function ServerComponent() {
   let featuredMovieIds = [32932, 23643, 29915, 30895, 31472, 33411];
 
   return (
-    <MovieGrid>
-      {featuredMovieIds.map((id: number) => (
-        <MovieTile key={id} id={id} />
-      ))}
-    </MovieGrid>
+    <>
+      <title>RR RSC Movies</title>
+      <MovieGrid>
+        {featuredMovieIds.map((id: number) => (
+          <MovieTile key={id} id={id} />
+        ))}
+      </MovieGrid>
+    </>
   );
 }
