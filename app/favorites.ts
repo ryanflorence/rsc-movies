@@ -1,22 +1,22 @@
+import { addFavorite, getFavorites, removeFavorite, isFavorite } from "./db";
 import { session } from "./session";
 
-export async function isFavorite(movieId: number) {
-  let favorites = session().get("favorites") || [];
-  return favorites.includes(movieId);
+export async function addSessionFavorite(movieId: number) {
+  let sessionId = session().get("_id");
+  addFavorite(sessionId, movieId);
 }
 
-export async function addFavorite(movieId: number) {
-  let favorites = session().get("favorites") || [];
-  favorites.push(movieId);
-  session().set("favorites", favorites);
+export async function removeSessionFavorite(movieId: number) {
+  let sessionId = session().get("_id");
+  removeFavorite(sessionId, movieId);
 }
 
-export async function removeFavorite(movieId: number) {
-  let favorites = session().get("favorites") || [];
-  favorites = favorites.filter((id: number) => id !== movieId);
-  session().set("favorites", favorites);
+export async function isSessionFavorite(movieId: number) {
+  let sessionId = session().get("_id");
+  return isFavorite(sessionId, movieId);
 }
 
-export async function getFavorites() {
-  return session().get("favorites") || [];
+export async function getSessionFavorites() {
+  let sessionId = session().get("_id");
+  return getFavorites(sessionId);
 }

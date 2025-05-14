@@ -5,8 +5,18 @@ import { AsyncLocalStorage } from "node:async_hooks";
 import { type unstable_MiddlewareFunction as MiddlewareFunction } from "react-router";
 
 export const db = new Database(path.join(process.cwd(), "database.sqlite"));
+
+db.pragma("journal_mode = WAL");
+db.prepare("DELETE FROM favorites").run();
+
+/**
+ * Async context to load data from anywhere in the app
+ */
 let context = new AsyncLocalStorage<ReturnType<typeof createLoaders>>();
 
+/**
+ * React Router middleware to provide the context to the app
+ */
 export const dataMiddleware: MiddlewareFunction<Response> = async (_, next) => {
   let loaders = createLoaders();
   return new Promise(resolve => {
@@ -16,12 +26,11 @@ export const dataMiddleware: MiddlewareFunction<Response> = async (_, next) => {
   });
 };
 
-// function to load data from anywhere in the app
-export function load() {
-  return context.getStore() as ReturnType<typeof createLoaders>;
-}
-
-////////////////////////////////////////////////////////////////////////////////
+/**
+ * Create the batched/cached loading functions so queries are naturally
+ * efficient regardless of the UI on the page (solves n+1 queries and
+ * refetching, based on GraphQL DataLoader)
+ */
 function createLoaders() {
   return {
     movie: batch(batchMovies),
@@ -29,6 +38,17 @@ function createLoaders() {
   };
 }
 
+/**
+ * Helper to load data from anywhere during a request (provided by the
+ * middleware)
+ */
+export function load() {
+  return context.getStore() as ReturnType<typeof createLoaders>;
+}
+
+/**
+ * Batch function to load multiple movies by id
+ */
 async function batchMovies(ids: number[]) {
   let placeholders = ids.map(() => "?").join(",");
   // order by year
@@ -58,6 +78,9 @@ async function batchMovies(ids: number[]) {
     );
 }
 
+/**
+ * Batch function to load multiple actors by id
+ */
 async function batchActors(ids: number[]) {
   let placeholders = ids.map(() => "?").join(",");
   let query = `
@@ -85,17 +108,34 @@ async function batchActors(ids: number[]) {
     .sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
 }
 
-export async function getRandomMovies() {
-  let query = `
-    SELECT id FROM movies
-    WHERE year > 2000
-    ORDER BY RANDOM()
-    LIMIT 6
-  `;
+export function getFavorites(sessionId: string) {
   return db
-    .prepare(query)
-    .all()
-    .map((movie: any) => movie.id);
+    .prepare("SELECT * FROM favorites WHERE session_id = ?")
+    .all(sessionId)
+    .map((favorite: any) => favorite.movie_id);
+}
+
+export function addFavorite(sessionId: string, movieId: number) {
+  let alreadyFavorite = isFavorite(sessionId, movieId);
+  if (alreadyFavorite) {
+    return true;
+  }
+  return db
+    .prepare("INSERT INTO favorites (session_id, movie_id) VALUES (?, ?)")
+    .run(sessionId, movieId);
+}
+
+export function removeFavorite(sessionId: string, movieId: number) {
+  return db
+    .prepare("DELETE FROM favorites WHERE session_id = ? AND movie_id = ?")
+    .run(sessionId, movieId);
+}
+
+export function isFavorite(sessionId: string, movieId: number) {
+  let result = db
+    .prepare("SELECT id FROM favorites WHERE session_id = ? AND movie_id = ?")
+    .get(sessionId, movieId);
+  return result !== undefined;
 }
 
 export type Movie = {
@@ -115,4 +155,10 @@ export type Actor = {
   id: number;
   name: string;
   movie_ids: number[];
+};
+
+export type Favorite = {
+  id: number;
+  movie_id: number;
+  session_id: string;
 };

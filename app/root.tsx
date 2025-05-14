@@ -5,7 +5,7 @@ import {
   type unstable_MiddlewareFunction as MiddlewareFunction,
 } from "react-router";
 import { Header } from "./components/header.tsx";
-import { Favorites } from "./components/favorites.tsx";
+import { Favorites } from "./components/favorites-bar.tsx";
 import { sessionMiddleware } from "./session.ts";
 import { dataMiddleware } from "./db.ts";
 

@@ -23,6 +23,9 @@ export let sessionMiddleware: MiddlewareFunction<Response> = async (
 ) => {
   let cookieHeader = request.headers.get("Cookie");
   let session = await storage.getSession(cookieHeader);
+  if (!session.has("_id")) {
+    session.set("_id", crypto.randomUUID());
+  }
   return new Promise(resolve => {
     context.run(session, async () => {
       let response = await next();
