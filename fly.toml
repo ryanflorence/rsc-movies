@@ -1,10 +1,10 @@
-# fly.toml app configuration file generated for rsc-movies on 2025-05-14T04:28:54Z
+# fly.toml app configuration file generated for rsc-movies on 2025-05-14T14:49:08Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = 'rsc-movies'
-primary_region = 'sin'
+primary_region = 'lax'
 
 [build]
 
