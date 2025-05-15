@@ -24,12 +24,9 @@ export async function ServerComponent({ loaderData }: Route.ComponentProps) {
       <title>{movie.title}</title>
       <meta name="description" content={movie.extract} />
 
-      <div className="w-5xl mx-auto flex gap-x-12">
+      <div className="p-12 items-center flex flex-col gap-y-12 lg:items-start lg:w-5xl lg:mx-auto lg:flex-row lg:gap-x-12">
         <div className="w-[296px] flex-none flex flex-col gap-y-2">
-          <img
-            src={movie.thumbnail}
-            className="w-full h-[435px] object-cover mb-4"
-          />
+          <img src={movie.thumbnail} className="h-[435px] object-cover mb-4" />
           <AddToFavoritesForm movieId={movie.id} />
         </div>
 
